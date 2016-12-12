@@ -8,6 +8,16 @@
  * For additional credits (generally to people who reported problems)
  * see CREDITS file.
  */
+/**
+ * This product currently only contains code developed by authors
+ * of specific components, as identified by the source code files.
+ * <p>
+ * Since product implements StAX API, it has dependencies to StAX API
+ * classes.
+ * <p>
+ * For additional credits (generally to people who reported problems)
+ * see CREDITS file.
+ */
 /*
 Copyright (c) 2010-2011, Advanced Micro Devices, Inc.
 All rights reserved.
@@ -48,55 +58,71 @@ under those regulations, please refer to the U.S. Bureau of Industry and Securit
 
 package com.aparapi.examples.convolution;
 
-import com.aparapi.*;
-import com.aparapi.device.*;
-import com.aparapi.internal.kernel.*;
-import com.aparapi.opencl.*;
-import com.aparapi.opencl.OpenCL.*;
+import com.aparapi.Range;
+import com.aparapi.device.OpenCLDevice;
+import com.aparapi.internal.kernel.KernelManager;
+import com.aparapi.opencl.OpenCL;
+import com.aparapi.opencl.OpenCL.Resource;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
-public class ConvolutionOpenCL{
+public class ConvolutionOpenCL {
 
-   @Resource("com/aparapi/examples/convolution/convolution.cl") interface Convolution extends OpenCL<Convolution>{
-      Convolution applyConvolution(//
-            Range range, //
-            @GlobalReadOnly("_convMatrix3x3") float[] _convMatrix3x3,//// only read from kernel 
-            @GlobalReadOnly("_imagIn") byte[] _imageIn,// only read from kernel (actually char[])
-            @GlobalWriteOnly("_imagOut") byte[] _imageOut, // only written to (never read) from kernel (actually char[])
-            @Arg("_width") int _width,// 
-            @Arg("_height") int _height);
-   }
+    @Resource("com/aparapi/examples/convolution/convolution.cl")
+    public interface Convolution extends OpenCL<Convolution> {
+        Convolution applyConvolution(//
+                                     Range range, //
+                                     @GlobalReadOnly("_convMatrix3x3") float[] _convMatrix3x3,//// only read from kernel
+                                     @GlobalReadOnly("_imagIn") byte[] _imageIn,// only read from kernel (actually char[])
+                                     @GlobalWriteOnly("_imagOut") byte[] _imageOut, // only written to (never read) from kernel (actually char[])
+                                     @Arg("_width") int _width,//
+                                     @Arg("_height") int _height);
+    }
 
-   public static void main(final String[] _args) {
-      final File file = new File(_args.length == 1 ? _args[0] : "./src/main/resources/testcard.jpg");
-
-      final OpenCLDevice openclDevice = (OpenCLDevice) KernelManager.instance().bestDevice();
-
-      final Convolution convolution = openclDevice.bind(Convolution.class);
-      final float convMatrix3x3[] = new float[] {
-              0.0f,
-            -10.0f,
-              0.0f,
-            -10.0f,
-              40.0f,
-            -10.0f,
-              0.0f,
-            -10.0f,
-              0.0f,
-      };
-
-      new ConvolutionViewer(file, convMatrix3x3){
-         Range range = null;
-
-         @Override protected void applyConvolution(float[] _convMatrix3x3, byte[] _inBytes, byte[] _outBytes, int _width,
-               int _height) {
-            if (range == null) {
-               range = openclDevice.createRange(_width * _height * 3);
+    public static void main(final String[] _args) {
+        InputStream f = null;
+        if (_args.length == 1) {
+            try {
+                f = new FileInputStream(_args[0]);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                f = null;
             }
+        }
 
-            convolution.applyConvolution(range, _convMatrix3x3, _inBytes, _outBytes, _width, _height);
-         }
-      };
-   }
+        if (f == null) {
+            f = ConvolutionOpenCL.class.getResourceAsStream("/testcard.jpg");
+        }
+
+        final OpenCLDevice openclDevice = (OpenCLDevice) KernelManager.instance().bestDevice();
+
+        final Convolution convolution = openclDevice.bind(Convolution.class);
+        final float convMatrix3x3[] = new float[]{
+                0.0f,
+                -10.0f,
+                0.0f,
+                -10.0f,
+                40.0f,
+                -10.0f,
+                0.0f,
+                -10.0f,
+                0.0f,
+        };
+
+        new ConvolutionViewer(f, convMatrix3x3) {
+            Range range = null;
+
+            @Override
+            protected void applyConvolution(float[] _convMatrix3x3, byte[] _inBytes, byte[] _outBytes, int _width,
+                                            int _height) {
+                if (range == null) {
+                    range = openclDevice.createRange(_width * _height * 3);
+                }
+
+                convolution.applyConvolution(range, _convMatrix3x3, _inBytes, _outBytes, _width, _height);
+            }
+        };
+    }
 }

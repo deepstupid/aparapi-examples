@@ -275,7 +275,7 @@ public class Local{
             gl.glColor3f(1.0f, 1.0f, 1.0f);
 
             final GLU glu = new GLU();
-            glu.gluPerspective(45.0f, ratio, 0.0f, 1000.0f);
+            glu.gluPerspective(45.0f, ratio, 0.1f, 1000.0f);
 
             glu.gluLookAt(xeye, yeye, zeye * zoomFactor, xat, yat, zat, 0.0f, 1.0f, 0.0f);
             if (running) {
@@ -319,7 +319,7 @@ public class Local{
             gl.glEnable(GL.GL_BLEND);
             gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE);
             try {
-               final InputStream textureStream = Local.class.getResourceAsStream("particle.jpg");
+               final InputStream textureStream = Local.class.getResourceAsStream("/particle.jpg");
                final Texture texture = TextureIO.newTexture(textureStream, false, null);
                texture.enable(gl);
             } catch (final IOException | GLException e) {

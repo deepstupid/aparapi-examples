@@ -47,31 +47,20 @@ under those regulations, please refer to the U.S. Bureau of Industry and Securit
  */
 package com.aparapi.examples.oopnbody;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.io.InputStream;
-
+import com.aparapi.Kernel;
+import com.aparapi.Range;
 import com.jogamp.opengl.*;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.fixedfunc.GLLightingFunc;
 import com.jogamp.opengl.glu.GLU;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.WindowConstants;
-
-import com.aparapi.Kernel;
-import com.aparapi.Range;
-
 import com.jogamp.opengl.util.FPSAnimator;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureIO;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * NBody implementing demonstrating Aparapi kernels.
@@ -294,7 +283,7 @@ public class Main{
             gl.glColor3f(1.0f, 1.0f, 1.0f);
 
             final GLU glu = new GLU();
-            glu.gluPerspective(45.0f, ratio, 0.0f, 1000.0f);
+            glu.gluPerspective(45.0f, ratio, 0.1f, 1000.0f);
 
             glu.gluLookAt(xeye, yeye, zeye * zoomFactor, xat, yat, zat, 0.0f, 1.0f, 0.0f);
             if (running) {
@@ -333,7 +322,7 @@ public class Main{
             gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
             gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
             try {
-               final InputStream textureStream = Main.class.getResourceAsStream("particle.jpg");
+               final InputStream textureStream = Main.class.getResourceAsStream("/particle.jpg");
                texture = TextureIO.newTexture(textureStream, false, null);
                texture.enable(gl);
             } catch (final IOException | GLException e) {

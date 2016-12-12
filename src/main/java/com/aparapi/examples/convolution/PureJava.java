@@ -48,9 +48,10 @@ under those regulations, please refer to the U.S. Bureau of Industry and Securit
 
 package com.aparapi.examples.convolution;
 
-import java.io.File;
-
 import com.aparapi.Kernel;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 
 public class PureJava{
 
@@ -115,12 +116,16 @@ public class PureJava{
               0.0f,
       };
 
-      new ConvolutionViewer(file, convMatrix3x3){
-         @Override protected void applyConvolution(float[] _convMatrix3x3, byte[] _inBytes, byte[] _outBytes, int _width,
-               int _height) {
-            convolution.applyConvolution(_convMatrix3x3, _inBytes, _outBytes, _width, _height);
-         }
-      };
+      try {
+         new ConvolutionViewer(file, convMatrix3x3){
+            @Override protected void applyConvolution(float[] _convMatrix3x3, byte[] _inBytes, byte[] _outBytes, int _width,
+                  int _height) {
+               convolution.applyConvolution(_convMatrix3x3, _inBytes, _outBytes, _width, _height);
+            }
+         };
+      } catch (FileNotFoundException e) {
+         e.printStackTrace();
+      }
 
    }
 

@@ -47,33 +47,23 @@ under those regulations, please refer to the U.S. Bureau of Industry and Securit
  */
 package com.aparapi.examples.nbody;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-
+import com.aparapi.Kernel;
+import com.aparapi.ProfileInfo;
+import com.aparapi.Range;
 import com.jogamp.opengl.*;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.fixedfunc.GLLightingFunc;
 import com.jogamp.opengl.glu.GLU;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.WindowConstants;
-
-import com.aparapi.Kernel;
-import com.aparapi.ProfileInfo;
-import com.aparapi.Range;
 import com.jogamp.opengl.util.FPSAnimator;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureData;
 import com.jogamp.opengl.util.texture.TextureIO;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 
 /**
  * NBody implementing demonstrating Aparapi kernels.
@@ -333,7 +323,7 @@ public class Main{
             gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
             gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
             try {
-               final InputStream textureStream = Main.class.getResourceAsStream("particle.jpg");
+               final InputStream textureStream = Main.class.getResourceAsStream("/particle.jpg");
                TextureData data = TextureIO.newTextureData(profile, textureStream, false, "jpg");
                texture = TextureIO.newTexture(data);
             } catch (final IOException | GLException e) {

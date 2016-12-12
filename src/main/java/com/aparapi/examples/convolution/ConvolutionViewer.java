@@ -53,8 +53,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 @SuppressWarnings("serial") public abstract class ConvolutionViewer extends JFrame{
 
@@ -74,7 +73,11 @@ import java.io.IOException;
 
    private float[] convMatrix3x3;
 
-   public ConvolutionViewer(File _file, float[] _convMatrix3x3) {
+   public ConvolutionViewer(File _file, float[] _convMatrix3x3) throws FileNotFoundException {
+      this(new FileInputStream(_file), _convMatrix3x3);
+   }
+
+   public ConvolutionViewer(InputStream _file, float[] _convMatrix3x3) {
 
       JFrame frame = new JFrame("Convolution Viewer");
 

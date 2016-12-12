@@ -16,7 +16,6 @@ import com.aparapi.examples.convolution.Convolution;
 import com.aparapi.examples.convolution.ConvolutionOpenCL;
 import com.aparapi.examples.convolution.PureJava;
 import com.aparapi.examples.extension.*;
-import com.aparapi.examples.javaonedemo.Life;
 import com.aparapi.examples.javaonedemo.Mandel;
 import com.aparapi.examples.javaonedemo.NBody;
 import com.aparapi.examples.mandel.Main2D;
@@ -59,7 +58,7 @@ public class All {
         System.out.println(" 25) Configuration - Profiling");
         System.out.println(" 26) Configuration - Profiling (no binary)");
         System.out.println(" 27) Effects");
-        System.out.println(" 28) Javaone - Game of Life");
+        //System.out.println(" 28) Javaone - Game of Life");
         System.out.println(" 29) Javaone - Mandlebrot");
         System.out.println(" 30) Javaone - NBody");
         System.out.println(" 31) NBody");
@@ -97,7 +96,7 @@ public class All {
         switch(line)
         {
             case "1":
-                com.aparapi.examples.life.Main.main(args);
+                com.aparapi.examples.life.Life.main(args);
                 break;
             case "2":
                 com.aparapi.examples.mandel.Main.main(args);
@@ -177,9 +176,9 @@ public class All {
             case "27":
                 com.aparapi.examples.effects.Main.main(args);
                 break;
-            case "28":
-                Life.main(args);
-                break;
+//            case "28":
+//                Life.main(args);
+//                break;
             case "29":
                 Mandel.main(args);
                 break;
