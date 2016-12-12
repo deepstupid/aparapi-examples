@@ -168,7 +168,7 @@ public class Main{
          processPixel(gid);
       }
 
-      boolean sequential = Boolean.getBoolean("sequential");
+      final boolean sequential = Boolean.getBoolean("sequential");
 
       public void nextGeneration() {
          // swap fromBase and toBase
@@ -211,8 +211,8 @@ public class Main{
                final List<ProfileInfo> profileInfo = lifeKernel.getProfileInfo();
                if (profileInfo != null) {
                   for (final ProfileInfo p : profileInfo) {
-                     System.out.print(" " + p.getType() + " " + p.getLabel() + " " + (p.getStart() / 1000) + " .. "
-                           + (p.getEnd() / 1000) + " " + ((p.getEnd() - p.getStart()) / 1000) + "us");
+                     System.out.print(" " + p.getType() + ' ' + p.getLabel() + ' ' + (p.getStart() / 1000) + " .. "
+                           + (p.getEnd() / 1000) + ' ' + ((p.getEnd() - p.getStart()) / 1000) + "us");
                   }
                }
             }
@@ -230,11 +230,9 @@ public class Main{
 
       final JButton startButton = new JButton("Start");
 
-      startButton.addActionListener(new ActionListener(){
-         @Override public void actionPerformed(ActionEvent e) {
-            running = true;
-            startButton.setEnabled(false);
-         }
+      startButton.addActionListener(e -> {
+         running = true;
+         startButton.setEnabled(false);
       });
       controlPanel.add(startButton);
       controlPanel.add(new JLabel(lifeKernel.getTargetDevice().getShortDescription()));

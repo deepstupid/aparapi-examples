@@ -51,8 +51,6 @@ package com.aparapi.examples.extension;
 import com.aparapi.device.*;
 import com.aparapi.examples.extension.Mandel;
 import com.aparapi.internal.kernel.*;
-import com.aparapi.opencl.*;
-import com.aparapi.opencl.OpenCL.*;
 import com.aparapi.Range;
 
 import javax.swing.*;
@@ -128,11 +126,11 @@ public class MandelSimple{
       final int[] imageRgb = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
       /** Mutable values of scale, offsetx and offsety so that we can modify the zoom level and position of a view. */
-      float scale = .0f;
+      float scale = 0.0f;
 
-      float offsetx = .0f;
+      float offsetx = 0.0f;
 
-      float offsety = .0f;
+      float offsety = 0.0f;
       final Device device = KernelManager.instance().bestDevice();
       if (device instanceof OpenCLDevice) {
          final OpenCLDevice openclDevice = (OpenCLDevice) device;
@@ -141,10 +139,10 @@ public class MandelSimple{
          System.out.println("max mem alloc size = " + openclDevice.getMaxMemAllocSize());
          mandelBrot = openclDevice.bind(Mandel.class);
 
-         final float defaultScale = 3f;
+         final float defaultScale = 3.0f;
          scale = defaultScale;
-         offsetx = -1f;
-         offsety = 0f;
+         offsetx = -1.0f;
+         offsety = 0.0f;
          final Range range = device.createRange2D(width, height);
          mandelBrot.createMandleBrot(range, scale, offsetx, offsety, imageRgb);
          viewer.repaint();
@@ -169,8 +167,8 @@ public class MandelSimple{
                }
             }
 
-            float x = -1f;
-            float y = 0f;
+            float x = -1.0f;
+            float y = 0.0f;
             final float tox = ((float) (to.x - (width / 2)) / width) * scale;
             final float toy = ((float) (to.y - (height / 2)) / height) * scale;
 
@@ -198,7 +196,7 @@ public class MandelSimple{
                   final long endMillis = System.currentTimeMillis();
                   final long elapsedMillis = endMillis - startMillis;
                   if (elapsedMillis > 1000) {
-                     framesPerSecondTextField.setText("" + ((frameCount * 1000) / elapsedMillis));
+                     framesPerSecondTextField.setText(String.valueOf((frameCount * 1000) / elapsedMillis));
                      frameCount = 0;
                      startMillis = endMillis;
                   }

@@ -27,30 +27,30 @@ public class SquareExample{
             + "  const size_t id = get_global_id(0);\n"//
             + "  out[id] = in[id]*in[id];\n"//
             + "}\n")//
-      public Squarer square(//
-            Range _range,//
-            @GlobalReadWrite("in") float[] in,//
-            @GlobalReadWrite("out") float[] out);
+      Squarer square(//
+                     Range _range,//
+                     @GlobalReadWrite("in") float[] in,//
+                     @GlobalReadWrite("out") float[] out);
    }
 
    @Resource("com/aparapi/examples/extension/squarer.cl") interface SquarerWithResource extends OpenCL<SquarerWithResource>{
-      public SquarerWithResource square(//
-            Range _range,//
-            @GlobalReadWrite("in") float[] in,//
-            @GlobalReadWrite("out") float[] out);
+      SquarerWithResource square(//
+                                 Range _range,//
+                                 @GlobalReadWrite("in") float[] in,//
+                                 @GlobalReadWrite("out") float[] out);
    }
 
-   @Source("\n"//
+   @Source('\n'//
          + "__kernel void square (\n" //
          + "   __global float *in,\n"//
          + "   __global float *out\n" + "){\n"//
          + "   const size_t id = get_global_id(0);\n"//
          + "   out[id] = in[id]*in[id];\n"//
          + "}\n") interface SquarerWithSource extends OpenCL<SquarerWithSource>{
-      public SquarerWithSource square(//
-            Range _range,//
-            @GlobalReadOnly("in") float[] in,//
-            @GlobalWriteOnly("out") float[] out);
+      SquarerWithSource square(//
+                               Range _range,//
+                               @GlobalReadOnly("in") float[] in,//
+                               @GlobalWriteOnly("out") float[] out);
    }
 
    public static void main(String[] args) {
@@ -76,19 +76,19 @@ public class SquareExample{
          squarer.square(range, in, squares);
 
          for (int i = 0; i < size; i++) {
-            System.out.println(l+" "+in[i] + " " + squares[i]);
+            System.out.println(l+" "+in[i] + ' ' + squares[i]);
          }
 
          squarer.square(range, squares, quads);
 
          for (int i = 0; i < size; i++) {
-            System.out.println(l+" "+ in[i] + " " + squares[i] + " " + quads[i]);
+            System.out.println(l+" "+ in[i] + ' ' + squares[i] + ' ' + quads[i]);
          }
          final List<ProfileInfo> profileInfo = squarer.getProfileInfo();
          if ((profileInfo != null) && (profileInfo.size() > 0)) {
              for (final ProfileInfo p : profileInfo) {
-                 System.out.print(" " + p.getType() + " " + p.getLabel() + " " + (p.getStart() / 1000) + " .. "
-                 + (p.getEnd() / 1000) + " " + ((p.getEnd() - p.getStart()) / 1000) + "us");
+                 System.out.print(" " + p.getType() + ' ' + p.getLabel() + ' ' + (p.getStart() / 1000) + " .. "
+                 + (p.getEnd() / 1000) + ' ' + ((p.getEnd() - p.getStart()) / 1000) + "us");
                  System.out.println();
              }
          }

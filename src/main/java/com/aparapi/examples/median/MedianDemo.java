@@ -78,7 +78,7 @@ public class MedianDemo {
       frame.getContentPane().add(label2);
       frame.pack();
       frame.setLocationRelativeTo(null);
-      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
       frame.setVisible(true);
 
       StringBuilder builder = new StringBuilder();
@@ -95,7 +95,7 @@ public class MedianDemo {
          long start = System.nanoTime();
          kernel.processImages(new MedianSettings(size));
          long elapsed = System.nanoTime() - start;
-         System.out.println("elapsed = " + elapsed / 1000000f + "ms");
+         System.out.println("elapsed = " + elapsed / 1000000.0f + "ms");
       }
 
       builder = new StringBuilder();

@@ -61,15 +61,15 @@ public class Main{
       System.out.println("Machine contains " + platforms.size() + " OpenCL platforms");
       int platformc = 0;
       for (OpenCLPlatform platform : platforms) {
-         System.out.println("Platform " + platformc + "{");
-         System.out.println("   Name    : \"" + platform.getName() + "\"");
-         System.out.println("   Vendor  : \"" + platform.getVendor() + "\"");
-         System.out.println("   Version : \"" + platform.getVersion() + "\"");
+         System.out.println("Platform " + platformc + '{');
+         System.out.println("   Name    : \"" + platform.getName() + '"');
+         System.out.println("   Vendor  : \"" + platform.getVendor() + '"');
+         System.out.println("   Version : \"" + platform.getVersion() + '"');
          List<OpenCLDevice> devices = platform.getOpenCLDevices();
          System.out.println("   Platform contains " + devices.size() + " OpenCL devices");
          int devicec = 0;
          for (OpenCLDevice device : devices) {
-            System.out.println("   Device " + devicec + "{");
+            System.out.println("   Device " + devicec + '{');
             System.out.println("       Type                  : " + device.getType());
             System.out.println("       GlobalMemSize         : " + device.getGlobalMemSize());
             System.out.println("       LocalMemSize          : " + device.getLocalMemSize());

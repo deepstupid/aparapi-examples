@@ -48,19 +48,13 @@ under those regulations, please refer to the U.S. Bureau of Industry and Securit
 
 package com.aparapi.examples.convolution;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Graphics2D;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.File;
 import java.io.IOException;
-
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.WindowConstants;
 
 @SuppressWarnings("serial") public abstract class ConvolutionViewer extends JFrame{
 
@@ -114,7 +108,7 @@ import javax.swing.WindowConstants;
                gc.setColor(Color.BLACK);
                gc.fillRect(0, 0, 50, 40);
                gc.setColor(Color.YELLOW);
-               gc.drawString("" + (end - start) + "ms", 10, 20);
+               gc.drawString((end - start) + "ms", 10, 20);
 
                imageLabel.repaint();
             }

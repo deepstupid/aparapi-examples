@@ -13,13 +13,13 @@ package com.aparapi.examples.mdarray;
 import com.aparapi.Kernel;
 
 class IMatMul2D extends Kernel{
-   int[][] A;
+   final int[][] A;
 
-   int[][] B;
+   final int[][] B;
 
-   int[][] C;
+   final int[][] C;
 
-   int N;
+   final int N;
 
    public IMatMul2D(int[][] A, int[][] B, int[][] C, int N) {
       this.A = A;

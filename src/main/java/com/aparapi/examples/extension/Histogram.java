@@ -21,18 +21,18 @@ public class Histogram{
 
    @Resource("com/aparapi/examples/extension/HistogramKernel.cl") interface HistogramKernel extends OpenCL<HistogramKernel>{
 
-      public HistogramKernel histogram256(//
-            Range _range,//
-            @GlobalReadOnly("data") byte[] data,//
-            @Local("sharedArray") byte[] sharedArray,//
-            @GlobalWriteOnly("binResult") int[] binResult,//
-            @Arg("binSize") int binSize);
+      HistogramKernel histogram256(//
+                                   Range _range,//
+                                   @GlobalReadOnly("data") byte[] data,//
+                                   @Local("sharedArray") byte[] sharedArray,//
+                                   @GlobalWriteOnly("binResult") int[] binResult,//
+                                   @Arg("binSize") int binSize);
 
-      public HistogramKernel bin256(//
-            Range _range,//        
-            @GlobalWriteOnly("histo") int[] histo,//
-            @GlobalReadOnly("binResult") int[] binResult,//
-            @Arg("subHistogramSize") int subHistogramSize);
+      HistogramKernel bin256(//
+                             Range _range,//
+                             @GlobalWriteOnly("histo") int[] histo,//
+                             @GlobalReadOnly("binResult") int[] binResult,//
+                             @Arg("subHistogramSize") int subHistogramSize);
    }
 
    public static void main(String[] args) {
@@ -98,7 +98,7 @@ public class Histogram{
          timer.print("java");
          for (int i = 0; i < 128; i++) {
             if (refHisto[i] != histo[i]) {
-               System.out.println(i + " " + histo[i] + " " + refHisto[i]);
+               System.out.println(i + " " + histo[i] + ' ' + refHisto[i]);
             }
          }
       }

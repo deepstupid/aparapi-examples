@@ -28,7 +28,7 @@ public class ConfigurationDemo {
          runTests(rep == 0, tests);
 
          if (rep % 100 == 99 || rep == 0 || rep == reps - 1) {
-            report = new StringBuilder("rep = " + rep + "\n");
+            report = new StringBuilder("rep = " + rep + '\n');
             KernelManager.instance().reportDeviceUsage(report, true);
             System.out.println(report);
          }

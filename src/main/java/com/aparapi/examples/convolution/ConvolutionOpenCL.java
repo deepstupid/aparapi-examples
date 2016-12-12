@@ -75,15 +75,15 @@ public class ConvolutionOpenCL{
 
       final Convolution convolution = openclDevice.bind(Convolution.class);
       final float convMatrix3x3[] = new float[] {
-            0f,
-            -10f,
-            0f,
-            -10f,
-            40f,
-            -10f,
-            0f,
-            -10f,
-            0f,
+              0.0f,
+            -10.0f,
+              0.0f,
+            -10.0f,
+              40.0f,
+            -10.0f,
+              0.0f,
+            -10.0f,
+              0.0f,
       };
 
       new ConvolutionViewer(file, convMatrix3x3){

@@ -10,10 +10,8 @@
  */
 package com.aparapi.examples.oopnbody;
 
-import java.util.List;
-
 public final class Body{
-   protected final float delT = .005f;
+   protected final float delT = 0.005f;
 
    protected final float espSqr = 1.0f;
 

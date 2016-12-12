@@ -11,17 +11,8 @@
 package com.aparapi.examples.extension;
 
 import com.aparapi.*;
-import com.aparapi.device.*;
-import com.aparapi.internal.kernel.*;
 import com.aparapi.opencl.*;
 import com.aparapi.opencl.OpenCL.*;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.*;
-import java.util.concurrent.*;
-import com.aparapi.opencl.OpenCL.Resource;
 
 /**
  * An example Aparapi application which displays a view of the Mandelbrot set and lets the user zoom in to a particular point.

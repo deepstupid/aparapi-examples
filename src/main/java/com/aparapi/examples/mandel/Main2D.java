@@ -89,11 +89,11 @@ public class Main2D{
       @Constant final private int pallette[] = new int[maxIterations + 1];
 
       /** Mutable values of scale, offsetx and offsety so that we can modify the zoom level and position of a view. */
-      private float scale = .0f;
+      private float scale = 0.0f;
 
-      private float offsetx = .0f;
+      private float offsetx = 0.0f;
 
-      private float offsety = .0f;
+      private float offsety = 0.0f;
 
       /**
        * Initialize the Kernel.
@@ -107,7 +107,7 @@ public class Main2D{
          for (int i = 0; i < maxIterations; i++) {
             final float h = i / (float) maxIterations;
             final float b = 1.0f - (h * h);
-            pallette[i] = Color.HSBtoRGB(h, 1f, b);
+            pallette[i] = Color.HSBtoRGB(h, 1.0f, b);
          }
 
       }
@@ -126,7 +126,7 @@ public class Main2D{
 
          float zx = x;
          float zy = y;
-         float new_zx = 0f;
+         float new_zx = 0.0f;
 
          // Iterate until the algorithm converges or until maxIterations are reached.
          while ((count < maxIterations) && (((zx * zx) + (zy * zy)) < 8)) {
@@ -199,10 +199,10 @@ public class Main2D{
       // Create a Kernel passing the size, RGB buffer and the palette.
       final MandelKernel kernel = new MandelKernel(rgb);
 
-      final float defaultScale = 3f;
+      final float defaultScale = 3.0f;
 
       // Set the default scale and offset, execute the kernel and force a repaint of the viewer.
-      kernel.setScaleAndOffset(defaultScale, -1f, 0f);
+      kernel.setScaleAndOffset(defaultScale, -1.0f, 0.0f);
       kernel.execute(range);
       System.arraycopy(rgb, 0, imageRgb, 0, rgb.length);
       viewer.repaint();
@@ -231,8 +231,8 @@ public class Main2D{
             }
          }
 
-         float x = -1f;
-         float y = 0f;
+         float x = -1.0f;
+         float y = 0.0f;
          float scale = defaultScale;
          final float tox = ((float) (to.x - (range.getGlobalSize(0) / 2)) / range.getGlobalSize(0)) * scale;
          final float toy = ((float) (to.y - (range.getGlobalSize(1) / 2)) / range.getGlobalSize(1)) * scale;
@@ -252,8 +252,8 @@ public class Main2D{
                final List<ProfileInfo> profileInfo = kernel.getProfileInfo();
                if ((profileInfo != null) && (profileInfo.size() > 0)) {
                   for (final ProfileInfo p : profileInfo) {
-                     System.out.print(" " + p.getType() + " " + p.getLabel() + " " + (p.getStart() / 1000) + " .. "
-                           + (p.getEnd() / 1000) + " " + ((p.getEnd() - p.getStart()) / 1000) + "us");
+                     System.out.print(" " + p.getType() + ' ' + p.getLabel() + ' ' + (p.getStart() / 1000) + " .. "
+                           + (p.getEnd() / 1000) + ' ' + ((p.getEnd() - p.getStart()) / 1000) + "us");
                   }
                   System.out.println();
                }

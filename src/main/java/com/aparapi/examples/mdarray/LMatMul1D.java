@@ -13,13 +13,13 @@ package com.aparapi.examples.mdarray;
 import com.aparapi.Kernel;
 
 class LMatMul1D extends Kernel{
-   long[] A;
+   final long[] A;
 
-   long[] B;
+   final long[] B;
 
-   long[] C;
+   final long[] C;
 
-   int N;
+   final int N;
 
    public LMatMul1D(long[] A, long[] B, long[] C, int N) {
       this.A = A;

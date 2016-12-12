@@ -22,10 +22,10 @@ public class Pow4Example{
    @Resource("com/aparapi/examples/extension/squarer.cl")
    interface Squarer extends OpenCL<Squarer>{
 
-      public Squarer square(//
-            Range _range,//
-            @GlobalReadWrite("in") float[] in,//
-            @GlobalReadWrite("out") float[] out);
+      Squarer square(//
+                     Range _range,//
+                     @GlobalReadWrite("in") float[] in,//
+                     @GlobalReadWrite("out") float[] out);
    }
 
    public static void main(String[] args) {
@@ -53,7 +53,7 @@ public class Pow4Example{
          squarer.square(range, squares, in);
 
          for (int i = 0; i < size; i++) {
-            System.out.println(i + " " + squares[i] + " " + in[i]);
+            System.out.println(i + " " + squares[i] + ' ' + in[i]);
          }
       }
    }

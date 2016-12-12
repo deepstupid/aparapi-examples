@@ -13,13 +13,13 @@ package com.aparapi.examples.mdarray;
 import com.aparapi.Kernel;
 
 class BMatMul3D extends Kernel{
-   byte[][][] A;
+   final byte[][][] A;
 
-   byte[][][] B;
+   final byte[][][] B;
 
-   byte[][][] C;
+   final byte[][][] C;
 
-   int N;
+   final int N;
 
    public BMatMul3D(byte[][][] A, byte[][][] B, byte[][][] C, int N) {
       this.A = A;

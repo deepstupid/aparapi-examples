@@ -13,13 +13,13 @@ package com.aparapi.examples.mdarray;
 import com.aparapi.Kernel;
 
 class FMatMul2D extends Kernel{
-   float[][] A;
+   final float[][] A;
 
-   float[][] B;
+   final float[][] B;
 
-   float[][] C;
+   final float[][] C;
 
-   int N;
+   final int N;
 
    public FMatMul2D(float[][] A, float[][] B, float[][] C, int N) {
       this.A = A;

@@ -62,7 +62,7 @@ public class PureJava{
       private byte imageIn[], imageOut[];
 
       public void processPixel(int x, int y, int w, int h) {
-         float accum = 0f;
+         float accum = 0.0f;
          int count = 0;
          for (int dx = -3; dx < 6; dx += 3) {
             for (int dy = -1; dy < 2; dy += 1) {
@@ -104,15 +104,15 @@ public class PureJava{
       final ImageConvolution convolution = new ImageConvolution();
 
       float convMatrix3x3[] = new float[] {
-            0f,
-            -10f,
-            0f,
-            -10f,
-            40f,
-            -10f,
-            0f,
-            -10f,
-            0f,
+              0.0f,
+            -10.0f,
+              0.0f,
+            -10.0f,
+              40.0f,
+            -10.0f,
+              0.0f,
+            -10.0f,
+              0.0f,
       };
 
       new ConvolutionViewer(file, convMatrix3x3){

@@ -10,13 +10,11 @@
  */
 package com.aparapi.examples.extension;
 
+import com.aparapi.Range;
+import com.aparapi.opencl.OpenCLAdapter;
+
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
-import com.aparapi.*;
-import com.aparapi.device.*;
-import com.aparapi.internal.kernel.*;
-import com.aparapi.opencl.*;
-import com.aparapi.Range;
 
 public class JavaMandelBrotMultiThread extends OpenCLAdapter<MandelBrot> implements MandelBrot{
    final int MAX_ITERATIONS = 64;
@@ -100,46 +98,41 @@ public class JavaMandelBrotMultiThread extends OpenCLAdapter<MandelBrot> impleme
       for (int thread = 0; thread < threadCount; thread++) {
          final int threadId = thread;
          final int groupHeight = height / threadCount;
-         (threads[threadId] = new Thread(new Runnable(){
-            @Override public void run() {
-               for (int gridy = threadId * groupHeight; gridy < ((threadId + 1) * groupHeight); gridy++) {
-                  for (int gridx = 0; gridx < width; gridx++) {
-                     final float x = ((((gridx) * scale) - ((scale / 2.0f) * width)) / width) + offsetx;
-                     final float y = ((((gridy) * scale) - ((scale / 2.0f) * height)) / height) + offsety;
-                     int count = 0;
-                     float zx = x;
-                     float zy = y;
-                     float new_zx = 0.0f;
-                     for (; (count < MAX_ITERATIONS) && (((zx * zx) + (zy * zy)) < 8.0f); count++) {
-                        new_zx = ((zx * zx) - (zy * zy)) + x;
-                        zy = ((2.0f * zx) * zy) + y;
-                        zx = new_zx;
-                     }
-                     rgb[gridx + (gridy * width)] = pallette[count];
+         (threads[threadId] = new Thread(() -> {
+            for (int gridy = threadId * groupHeight; gridy < ((threadId + 1) * groupHeight); gridy++) {
+               for (int gridx = 0; gridx < width; gridx++) {
+                  final float x = ((((gridx) * scale) - ((scale / 2.0f) * width)) / width) + offsetx;
+                  final float y = ((((gridy) * scale) - ((scale / 2.0f) * height)) / height) + offsety;
+                  int count = 0;
+                  float zx = x;
+                  float zy = y;
+                  float new_zx = 0.0f;
+                  for (; (count < MAX_ITERATIONS) && (((zx * zx) + (zy * zy)) < 8.0f); count++) {
+                     new_zx = ((zx * zx) - (zy * zy)) + x;
+                     zy = ((2.0f * zx) * zy) + y;
+                     zx = new_zx;
                   }
+                  rgb[gridx + (gridy * width)] = pallette[count];
                }
-               try {
-                  barrier.await();
-               } catch (final InterruptedException e) {
-                  // TODO Auto-generated catch block
-                  e.printStackTrace();
-               } catch (final BrokenBarrierException e) {
-                  // TODO Auto-generated catch block
-                  e.printStackTrace();
-               }
+            }
+            try {
+               barrier.await();
+            } catch (final InterruptedException e) {
+               // TODO Auto-generated catch block
+               e.printStackTrace();
+            } catch (final BrokenBarrierException e) {
+               // TODO Auto-generated catch block
+               e.printStackTrace();
             }
          })).start();
       }
       try {
          barrier.await();
-      } catch (final InterruptedException e) {
-         // TODO Auto-generated catch block
-         e.printStackTrace();
-      } catch (final BrokenBarrierException e) {
+      } catch (final InterruptedException | BrokenBarrierException e) {
          // TODO Auto-generated catch block
          e.printStackTrace();
       }
-      return (this);
+       return (this);
    }
 
 }

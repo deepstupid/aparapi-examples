@@ -14,9 +14,9 @@ import com.aparapi.Kernel;
 
 public class MDArray {
 
-   static int N = 1 << 10;
+   static final int N = 1 << 10;
 
-   static int M = 1 << 5;
+   static final int M = 1 << 5;
 
    public static void main(String[] args) {
       System.out.println("boolean 1D");
@@ -604,8 +604,8 @@ public class MDArray {
          for (int j = 0; j < N; j++) {
             A[(i * N) + j] = (byte) (i + j);
             B[(i * N) + j] = (byte) (i - j);
-            cpu[(i * N) + j] = (byte) 0;
-            gpu[(i * N) + j] = (byte) 0;
+            cpu[(i * N) + j] = 0;
+            gpu[(i * N) + j] = 0;
          }
       }
 
@@ -638,8 +638,8 @@ public class MDArray {
          for (int j = 0; j < N; j++) {
             A[(i * N) + j] = (short) (i + j);
             B[(i * N) + j] = (short) (i - j);
-            cpu[(i * N) + j] = (short) 0;
-            gpu[(i * N) + j] = (short) 0;
+            cpu[(i * N) + j] = 0;
+            gpu[(i * N) + j] = 0;
          }
       }
 
@@ -706,8 +706,8 @@ public class MDArray {
          for (int j = 0; j < N; j++) {
             A[(i * N) + j] = i + j;
             B[(i * N) + j] = i - j;
-            cpu[(i * N) + j] = 0l;
-            gpu[(i * N) + j] = 0l;
+            cpu[(i * N) + j] = 0L;
+            gpu[(i * N) + j] = 0L;
          }
       }
 
@@ -842,8 +842,8 @@ public class MDArray {
          for (int j = 0; j < N; j++) {
             A[i][j] = (byte) (i + j);
             B[i][j] = (byte) (i - j);
-            cpu[i][j] = (byte) 0;
-            gpu[i][j] = (byte) 0;
+            cpu[i][j] = 0;
+            gpu[i][j] = 0;
          }
       }
 
@@ -876,8 +876,8 @@ public class MDArray {
          for (int j = 0; j < N; j++) {
             A[i][j] = (short) (i + j);
             B[i][j] = (short) (i - j);
-            cpu[i][j] = (short) 0;
-            gpu[i][j] = (short) 0;
+            cpu[i][j] = 0;
+            gpu[i][j] = 0;
          }
       }
 
@@ -944,8 +944,8 @@ public class MDArray {
          for (int j = 0; j < N; j++) {
             A[i][j] = i + j;
             B[i][j] = i - j;
-            cpu[i][j] = 0l;
-            gpu[i][j] = 0l;
+            cpu[i][j] = 0L;
+            gpu[i][j] = 0L;
          }
       }
 
@@ -1047,8 +1047,7 @@ public class MDArray {
             for (int k = 0; k < M; k++) {
                A[i][j][k] = ((i % 2) == 0) ^ (((j % 2) == 0) & ((k % 2) == 0));
                B[i][j][k] = (((i % 2) == 0) & ((j % 2) == 0)) ^ ((k % 2) == 0);
-               ;
-               cpu[i][j][k] = false;
+                cpu[i][j][k] = false;
                gpu[i][j][k] = false;
             }
          }
@@ -1084,8 +1083,8 @@ public class MDArray {
             for (int k = 0; k < M; k++) {
                A[i][j][k] = (byte) (i + j + k);
                B[i][j][k] = (byte) ((i - j) + k);
-               cpu[i][j][k] = (byte) 0;
-               gpu[i][j][k] = (byte) 0;
+               cpu[i][j][k] = 0;
+               gpu[i][j][k] = 0;
             }
          }
       }
@@ -1120,8 +1119,8 @@ public class MDArray {
             for (int k = 0; k < M; k++) {
                A[i][j][k] = (short) (i + j + k);
                B[i][j][k] = (short) ((i - j) + k);
-               cpu[i][j][k] = (short) 0;
-               gpu[i][j][k] = (short) 0;
+               cpu[i][j][k] = 0;
+               gpu[i][j][k] = 0;
             }
          }
       }
@@ -1192,8 +1191,8 @@ public class MDArray {
             for (int k = 0; k < M; k++) {
                A[i][j][k] = i + j + k;
                B[i][j][k] = (i - j) + k;
-               cpu[i][j][k] = 0l;
-               gpu[i][j][k] = 0l;
+               cpu[i][j][k] = 0L;
+               gpu[i][j][k] = 0L;
             }
          }
       }

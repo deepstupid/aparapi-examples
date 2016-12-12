@@ -22,10 +22,10 @@ public class FFTExample{
 
    @Resource("com/aparapi/examples/extension/fft.cl") interface FFT extends OpenCL<FFT>{
 
-      public FFT forward(//
-            Range _range,//
-            @GlobalReadWrite("real") float[] real,//
-            @GlobalReadWrite("imaginary") float[] imaginary//
+      FFT forward(//
+                  Range _range,//
+                  @GlobalReadWrite("real") float[] real,//
+                  @GlobalReadWrite("imaginary") float[] imaginary//
       );
    }
 
@@ -112,7 +112,7 @@ public class FFTExample{
       final FFT fft = device.bind(FFT.class);
       for (int i = 0; i < LEN; i++) {
          initial[i] = real[i] = referenceReal[i] = (float) (Math.random() * 256);
-         imaginary[i] = referenceImaginary[0] = 0f;
+         imaginary[i] = referenceImaginary[0] = 0.0f;
       }
 
       final Range range = device.createRange(64);

@@ -140,7 +140,7 @@ public class Main{
 
          float y = (gid / height);
 
-         float minRadius = 1024f;
+         float minRadius = 1024.0f;
 
          /** determine the minimum radius between this pixel position (x,y) and each of the trail positions _trailx[0..n],_traily[0..n] **/
          for (int i = 0; i < trail; i++) {
@@ -184,7 +184,7 @@ public class Main{
       for (int i = 0; i < palletteSize; i++) {
          float h = i / (float) palletteSize;
          float b = 1.0f - h * h;
-         pallette[i] = Color.HSBtoRGB(h, 1f, b);
+         pallette[i] = Color.HSBtoRGB(h, 1.0f, b);
       }
 
       /** We will keep a trail of 64 mouse positions **/
@@ -276,8 +276,8 @@ public class Main{
             }
          }
          /** add the new x,y to the trail arrays and bump the poition **/
-         trailx[trailLastUpdatedPosition % trailx.length] = (float) mousePosition.x;
-         traily[trailLastUpdatedPosition % traily.length] = (float) mousePosition.y;
+         trailx[trailLastUpdatedPosition % trailx.length] = mousePosition.x;
+         traily[trailLastUpdatedPosition % traily.length] = mousePosition.y;
          trailLastUpdatedPosition++;
 
          /** execute the kernel which calculates new pixel values **/

@@ -54,17 +54,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Arrays;
 
-import com.jogamp.opengl.GL;
-import com.jogamp.opengl.GL2;
-import com.jogamp.opengl.GLAutoDrawable;
-import com.jogamp.opengl.GLCapabilities;
-import com.jogamp.opengl.GLEventListener;
-import com.jogamp.opengl.GLException;
-import com.jogamp.opengl.GLProfile;
+import com.jogamp.opengl.*;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.fixedfunc.GLLightingFunc;
 import com.jogamp.opengl.glu.GLU;
@@ -76,7 +67,6 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
 import com.aparapi.Kernel;
-import com.aparapi.ProfileInfo;
 import com.aparapi.Range;
 
 import com.jogamp.opengl.util.FPSAnimator;
@@ -100,15 +90,15 @@ public class Main{
 
    public static class NBodyKernel extends Kernel{
 
-      protected final float delT = .005f;
+      protected final float delT = 0.005f;
 
       protected final float espSqr = 1.0f;
 
-      protected final float mass = 5f;
+      protected final float mass = 5.0f;
 
       private final Range range;
 
-      public Body[] bodies;
+      public final Body[] bodies;
 
       /**
        * Constructor initializes xyz and vxyz arrays.
@@ -119,7 +109,7 @@ public class Main{
          range = _range;
          bodies = new Body[range.getGlobalSize(0)];
 
-         final float maxDist = 20f;
+         final float maxDist = 20.0f;
          for (int body = 0; body < range.getGlobalSize(0); body++) {
             final float theta = (float) (Math.random() * Math.PI * 2);
             final float phi = (float) (Math.random() * Math.PI * 2);
@@ -136,7 +126,7 @@ public class Main{
             } else {
                x -= maxDist * 1.5;
             }
-            bodies[body] = new Body(x, y, z, 5f);
+            bodies[body] = new Body(x, y, z, 5.0f);
          }
 
          Body.allBodies = bodies;
@@ -148,9 +138,9 @@ public class Main{
       @Override public void run() {
          final int body = getGlobalId();
 
-         float accx = 0.f;
-         float accy = 0.f;
-         float accz = 0.f;
+         float accx = 0.0f;
+         float accy = 0.0f;
+         float accz = 0.0f;
 
          float myPosx = bodies[body].getX();
          float myPosy = bodies[body].getY();
@@ -171,9 +161,9 @@ public class Main{
          accx = accx * delT;
          accy = accy * delT;
          accz = accz * delT;
-         bodies[body].setX(myPosx + (bodies[body].getVx() * delT) + (accx * .5f * delT));
-         bodies[body].setY(myPosy + (bodies[body].getVy() * delT) + (accy * .5f * delT));
-         bodies[body].setZ(myPosz + (bodies[body].getVz() * delT) + (accz * .5f * delT));
+         bodies[body].setX(myPosx + (bodies[body].getVx() * delT) + (accx * 0.5f * delT));
+         bodies[body].setY(myPosy + (bodies[body].getVy() * delT) + (accy * 0.5f * delT));
+         bodies[body].setZ(myPosz + (bodies[body].getVz() * delT) + (accz * 0.5f * delT));
 
          bodies[body].setVx(bodies[body].getVx() + accx);
          bodies[body].setVy(bodies[body].getVy() + accy);
@@ -187,16 +177,16 @@ public class Main{
        */
 
       protected void render(GL2 gl) {
-         gl.glBegin(GL2.GL_QUADS);
+         gl.glBegin(GL2ES3.GL_QUADS);
          int sz = range.getGlobalSize(0);
          for (int i = 0; i < sz; i++) {
 
             if (i < (sz / 2)) {
-               gl.glColor3f(1f, 0f, 0f);
+               gl.glColor3f(1.0f, 0.0f, 0.0f);
             } else if (i < (sz * 0.666)) {
-               gl.glColor3f(0f, 1f, 0f);
+               gl.glColor3f(0.0f, 1.0f, 0.0f);
             } else {
-               gl.glColor3f(0f, 0f, 1f);
+               gl.glColor3f(0.0f, 0.0f, 1.0f);
             }
 
             Body currBody = bodies[i];
@@ -237,17 +227,15 @@ public class Main{
 
       final JButton startButton = new JButton("Start");
 
-      startButton.addActionListener(new ActionListener(){
-         @Override public void actionPerformed(ActionEvent e) {
-            running = true;
-            startButton.setEnabled(false);
-         }
+      startButton.addActionListener(e -> {
+         running = true;
+         startButton.setEnabled(false);
       });
       controlPanel.add(startButton);
       //controlPanel.add(new JLabel(kernel.getExecutionMode().toString()));
 
       controlPanel.add(new JLabel("   Particles"));
-      controlPanel.add(new JTextField("" + bodyCount, 5));
+      controlPanel.add(new JTextField(String.valueOf(bodyCount), 5));
 
       controlPanel.add(new JLabel("FPS"));
       final JTextField framesPerSecondTextField = new JTextField("0", 5);
@@ -274,17 +262,17 @@ public class Main{
       canvas.addGLEventListener(new GLEventListener(){
          private double ratio;
 
-         private final float xeye = 0f;
+         private final float xeye = 0.0f;
 
-         private final float yeye = 0f;
+         private final float yeye = 0.0f;
 
-         private final float zeye = 100f;
+         private final float zeye = 100.0f;
 
-         private final float xat = 0f;
+         private final float xat = 0.0f;
 
-         private final float yat = 0f;
+         private final float yat = 0.0f;
 
-         private final float zat = 0f;
+         private final float zat = 0.0f;
 
          public final float zoomFactor = 1.0f;
 
@@ -303,12 +291,12 @@ public class Main{
             texture.bind(gl);
             gl.glLoadIdentity();
             gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-            gl.glColor3f(1f, 1f, 1f);
+            gl.glColor3f(1.0f, 1.0f, 1.0f);
 
             final GLU glu = new GLU();
-            glu.gluPerspective(45f, ratio, 0f, 1000f);
+            glu.gluPerspective(45.0f, ratio, 0.0f, 1000.0f);
 
-            glu.gluLookAt(xeye, yeye, zeye * zoomFactor, xat, yat, zat, 0f, 1f, 0f);
+            glu.gluLookAt(xeye, yeye, zeye * zoomFactor, xat, yat, zat, 0.0f, 1.0f, 0.0f);
             if (running) {
                //Arrays.parallel(bodies.toArray(new Body[1])).forEach(b -> {b.nextMove();});
                kernel.execute(kernel.range);
@@ -348,9 +336,7 @@ public class Main{
                final InputStream textureStream = Main.class.getResourceAsStream("particle.jpg");
                texture = TextureIO.newTexture(textureStream, false, null);
                texture.enable(gl);
-            } catch (final IOException e) {
-               e.printStackTrace();
-            } catch (final GLException e) {
+            } catch (final IOException | GLException e) {
                e.printStackTrace();
             }
 
@@ -363,7 +349,7 @@ public class Main{
             final GL2 gl = drawable.getGL().getGL2();
             gl.glViewport(0, 0, width, height);
 
-            ratio = (double) width / (double) height;
+            ratio = (double) width / height;
 
          }
 

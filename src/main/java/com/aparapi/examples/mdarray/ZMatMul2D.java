@@ -13,13 +13,13 @@ package com.aparapi.examples.mdarray;
 import com.aparapi.Kernel;
 
 class ZMatMul2D extends Kernel{
-   boolean[][] A;
+   final boolean[][] A;
 
-   boolean[][] B;
+   final boolean[][] B;
 
-   boolean[][] C;
+   final boolean[][] C;
 
-   int N;
+   final int N;
 
    public ZMatMul2D(boolean[][] A, boolean[][] B, boolean[][] C, int N) {
       this.A = A;

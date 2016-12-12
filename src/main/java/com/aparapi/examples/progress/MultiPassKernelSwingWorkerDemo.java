@@ -29,7 +29,7 @@ public class MultiPassKernelSwingWorkerDemo {
    private static JButton startButton;
    private static JButton cancelButton;
    private static JProgressBar progress;
-   private static JLabel status = new JLabel("Press Start", JLabel.CENTER);
+   private static final JLabel status = new JLabel("Press Start", SwingConstants.CENTER);
    private static LongRunningKernel kernel;
    private static MultiPassKernelSwingWorker worker;
 
@@ -48,19 +48,9 @@ public class MultiPassKernelSwingWorkerDemo {
       startButton = new JButton("Start");
       cancelButton = new JButton("Cancel");
       startButton.setEnabled(true);
-      startButton.addActionListener(new ActionListener() {
-         @Override
-         public void actionPerformed(ActionEvent e) {
-            start();
-         }
-      });
+      startButton.addActionListener(e -> start());
       cancelButton.setEnabled(false);
-      cancelButton.addActionListener(new ActionListener() {
-         @Override
-         public void actionPerformed(ActionEvent e) {
-            cancel();
-         }
-      });
+      cancelButton.addActionListener(e -> cancel());
       buttons.add(startButton);
       buttons.add(cancelButton);
       rootPanel.add(buttons, BorderLayout.SOUTH);
@@ -71,7 +61,7 @@ public class MultiPassKernelSwingWorkerDemo {
       rootPanel.add(progress, BorderLayout.NORTH);
 
       JFrame frame = new JFrame("MultiPassKernelSwingWorker Demo");
-      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
       frame.getContentPane().add(rootPanel);
       frame.pack();
       frame.setLocationRelativeTo(null);

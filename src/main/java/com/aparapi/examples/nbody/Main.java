@@ -56,13 +56,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import com.jogamp.opengl.GL;
-import com.jogamp.opengl.GL2;
-import com.jogamp.opengl.GLAutoDrawable;
-import com.jogamp.opengl.GLCapabilities;
-import com.jogamp.opengl.GLEventListener;
-import com.jogamp.opengl.GLException;
-import com.jogamp.opengl.GLProfile;
+import com.jogamp.opengl.*;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.fixedfunc.GLLightingFunc;
 import com.jogamp.opengl.glu.GLU;
@@ -97,11 +91,11 @@ import com.jogamp.opengl.util.texture.TextureIO;
 public class Main{
 
    public static class NBodyKernel extends Kernel{
-      protected final float delT = .005f;
+      protected final float delT = 0.005f;
 
       protected final float espSqr = 1.0f;
 
-      protected final float mass = 5f;
+      protected final float mass = 5.0f;
 
       private final Range range;
 
@@ -119,7 +113,7 @@ public class Main{
          // range = Range.create(bodies);
          xyz = new float[range.getGlobalSize(0) * 3];
          vxyz = new float[range.getGlobalSize(0) * 3];
-         final float maxDist = 20f;
+         final float maxDist = 20.0f;
          for (int body = 0; body < (range.getGlobalSize(0) * 3); body += 3) {
 
             final float theta = (float) (Math.random() * Math.PI * 2);
@@ -150,9 +144,9 @@ public class Main{
          final int count = getGlobalSize(0) * 3;
          final int globalId = body * 3;
 
-         float accx = 0.f;
-         float accy = 0.f;
-         float accz = 0.f;
+         float accx = 0.0f;
+         float accy = 0.0f;
+         float accz = 0.0f;
 
          final float myPosx = xyz[globalId + 0];
          final float myPosy = xyz[globalId + 1];
@@ -170,9 +164,9 @@ public class Main{
          accx = accx * delT;
          accy = accy * delT;
          accz = accz * delT;
-         xyz[globalId + 0] = myPosx + (vxyz[globalId + 0] * delT) + (accx * .5f * delT);
-         xyz[globalId + 1] = myPosy + (vxyz[globalId + 1] * delT) + (accy * .5f * delT);
-         xyz[globalId + 2] = myPosz + (vxyz[globalId + 2] * delT) + (accz * .5f * delT);
+         xyz[globalId + 0] = myPosx + (vxyz[globalId + 0] * delT) + (accx * 0.5f * delT);
+         xyz[globalId + 1] = myPosy + (vxyz[globalId + 1] * delT) + (accy * 0.5f * delT);
+         xyz[globalId + 2] = myPosz + (vxyz[globalId + 2] * delT) + (accz * 0.5f * delT);
 
          vxyz[globalId + 0] = vxyz[globalId + 0] + accx;
          vxyz[globalId + 1] = vxyz[globalId + 1] + accy;
@@ -186,7 +180,7 @@ public class Main{
        */
 
       protected void render(GL2 gl) {
-         gl.glBegin(GL2.GL_QUADS);
+         gl.glBegin(GL2ES3.GL_QUADS);
 
          for (int i = 0; i < (range.getGlobalSize(0) * 3); i += 3) {
             gl.glTexCoord2f(0, 1);
@@ -225,17 +219,15 @@ public class Main{
 
       final JButton startButton = new JButton("Start");
 
-      startButton.addActionListener(new ActionListener(){
-         @Override public void actionPerformed(ActionEvent e) {
-            running = true;
-            startButton.setEnabled(false);
-         }
+      startButton.addActionListener(e -> {
+         running = true;
+         startButton.setEnabled(false);
       });
       controlPanel.add(startButton);
       controlPanel.add(new JLabel(kernel.getExecutionMode().toString()));
 
       controlPanel.add(new JLabel("   Particles"));
-      controlPanel.add(new JTextField("" + kernel.range.getGlobalSize(0), 5));
+      controlPanel.add(new JTextField(String.valueOf(kernel.range.getGlobalSize(0)), 5));
 
       controlPanel.add(new JLabel("FPS"));
       final JTextField framesPerSecondTextField = new JTextField("0", 5);
@@ -250,7 +242,7 @@ public class Main{
       final JTextField positionUpdatesPerMicroSecondTextField = new JTextField("0", 5);
 
       controlPanel.add(positionUpdatesPerMicroSecondTextField);
-      final GLCapabilities caps = new GLCapabilities(null);
+      final GLCapabilities caps =  new GLCapabilities(GLProfile.getDefault());
       final GLProfile profile = caps.getGLProfile();
       caps.setDoubleBuffered(true);
       caps.setHardwareAccelerated(true);
@@ -262,17 +254,17 @@ public class Main{
       canvas.addGLEventListener(new GLEventListener(){
          private double ratio;
 
-         private final float xeye = 0f;
+         private final float xeye = 0.0f;
 
-         private final float yeye = 0f;
+         private final float yeye = 0.0f;
 
-         private final float zeye = 100f;
+         private final float zeye = 100.0f;
 
-         private final float xat = 0f;
+         private final float xat = 0.0f;
 
-         private final float yat = 0f;
+         private final float yat = 0.0f;
 
-         private final float zat = 0f;
+         private final float zat = 0.0f;
 
          public final float zoomFactor = 1.0f;
 
@@ -291,12 +283,12 @@ public class Main{
             texture.bind(gl);
             gl.glLoadIdentity();
             gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-            gl.glColor3f(1f, 1f, 1f);
+            gl.glColor3f(1.0f, 1.0f, 1.0f);
 
             final GLU glu = new GLU();
-            glu.gluPerspective(45f, ratio, 0f, 1000f);
+            glu.gluPerspective(45.0f, ratio, 0.0f, 1000.0f);
 
-            glu.gluLookAt(xeye, yeye, zeye * zoomFactor, xat, yat, zat, 0f, 1f, 0f);
+            glu.gluLookAt(xeye, yeye, zeye * zoomFactor, xat, yat, zat, 0.0f, 1.0f, 0.0f);
             if (running) {
                kernel.execute(kernel.range);
                if (kernel.isExplicit()) {
@@ -305,7 +297,7 @@ public class Main{
                final List<ProfileInfo> profileInfo = kernel.getProfileInfo();
                if ((profileInfo != null) && (profileInfo.size() > 0)) {
                   for (final ProfileInfo p : profileInfo) {
-                     System.out.print(" " + p.getType() + " " + p.getLabel() + ((p.getEnd() - p.getStart()) / 1000) + "us");
+                     System.out.print(" " + p.getType() + ' ' + p.getLabel() + ((p.getEnd() - p.getStart()) / 1000) + "us");
                   }
                   System.out.println();
                }
@@ -344,9 +336,7 @@ public class Main{
                final InputStream textureStream = Main.class.getResourceAsStream("particle.jpg");
                TextureData data = TextureIO.newTextureData(profile, textureStream, false, "jpg");
                texture = TextureIO.newTexture(data);
-            } catch (final IOException e) {
-               e.printStackTrace();
-            } catch (final GLException e) {
+            } catch (final IOException | GLException e) {
                e.printStackTrace();
             }
 
@@ -359,7 +349,7 @@ public class Main{
             final GL2 gl = drawable.getGL().getGL2();
             gl.glViewport(0, 0, width, height);
 
-            ratio = (double) width / (double) height;
+            ratio = (double) width / height;
 
          }
 

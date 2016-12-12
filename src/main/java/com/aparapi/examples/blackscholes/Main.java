@@ -155,11 +155,11 @@ public class Main{
          put[gid] = KexpMinusRT * phiD2 - S * phiD1;
       }
 
-      private float randArray[];
+      private final float[] randArray;
 
-      private float put[];
+      private final float[] put;
 
-      private float call[];
+      private final float[] call;
 
       public BlackScholesKernel(int size) {
          randArray = new float[size];
@@ -171,7 +171,7 @@ public class Main{
          }
       }
 
-      public void showArray(float ary[], String name, int count) {
+      public static void showArray(float ary[], String name, int count) {
          String line;
          line = name + ": ";
          for (int i = 0; i < count; i++) {

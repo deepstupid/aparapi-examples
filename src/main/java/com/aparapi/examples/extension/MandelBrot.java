@@ -11,8 +11,6 @@
 package com.aparapi.examples.extension;
 
 import com.aparapi.*;
-import com.aparapi.device.*;
-import com.aparapi.internal.kernel.*;
 import com.aparapi.opencl.*;
 import com.aparapi.opencl.OpenCL.Resource;
 

@@ -24,10 +24,10 @@ public class SwapExample{
             + "  float temp=lhs[id];" + "  lhs[id] = rhs[id];\n"//
             + "  rhs[id] = temp;\n"//
             + "}\n")//
-      public Swapper swap(//
-            Range _range,//
-            @GlobalReadWrite("lhs") float[] lhs,//
-            @GlobalReadWrite("rhs") float[] rhs);
+      Swapper swap(//
+                   Range _range,//
+                   @GlobalReadWrite("lhs") float[] lhs,//
+                   @GlobalReadWrite("rhs") float[] rhs);
    }
 
    public static void main(String[] args) {

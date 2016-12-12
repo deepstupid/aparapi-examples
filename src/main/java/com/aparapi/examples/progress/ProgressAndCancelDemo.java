@@ -27,7 +27,7 @@ public class ProgressAndCancelDemo {
    private static JButton startButton;
    private static JButton cancelButton;
    private static JProgressBar progress;
-   private static JLabel status = new JLabel("Press Start", JLabel.CENTER);
+   private static final JLabel status = new JLabel("Press Start", SwingConstants.CENTER);
 
    private static LongRunningKernel kernel;
    private static Timer timer;
@@ -46,21 +46,18 @@ public class ProgressAndCancelDemo {
       if (TEST_JTP) {
          KernelManager.setKernelManager(KernelManagers.JTP_ONLY);
       }
-      Thread asynchReader = new Thread() {
-         @Override
-         public void run() {
-            while (true) {
-               try {
-                  int cancelState = kernel.getCancelState();
-                  int passId = kernel.getCurrentPass();
-                  System.out.println("cancel = " + cancelState + ", passId = " + passId);
-                  Thread.sleep(50);
-               } catch (InterruptedException e) {
-                  e.printStackTrace();
-               }
+      Thread asynchReader = new Thread(() -> {
+         while (true) {
+            try {
+               int cancelState = kernel.getCancelState();
+               int passId = kernel.getCurrentPass();
+               System.out.println("cancel = " + cancelState + ", passId = " + passId);
+               Thread.sleep(50);
+            } catch (InterruptedException e) {
+               e.printStackTrace();
             }
          }
-      };
+      });
       //asynchReader.start();
       UIManager.setLookAndFeel(NimbusLookAndFeel.class.getName());
       JPanel rootPanel = new JPanel();
@@ -69,19 +66,9 @@ public class ProgressAndCancelDemo {
       startButton = new JButton("Start");
       cancelButton = new JButton("Cancel");
       startButton.setEnabled(true);
-      startButton.addActionListener(new ActionListener() {
-         @Override
-         public void actionPerformed(ActionEvent e) {
-            start();
-         }
-      });
+      startButton.addActionListener(e -> start());
       cancelButton.setEnabled(false);
-      cancelButton.addActionListener(new ActionListener() {
-         @Override
-         public void actionPerformed(ActionEvent e) {
-            cancel();
-         }
-      });
+      cancelButton.addActionListener(e -> cancel());
       buttons.add(startButton);
       buttons.add(cancelButton);
       rootPanel.add(buttons, BorderLayout.SOUTH);
@@ -92,7 +79,7 @@ public class ProgressAndCancelDemo {
       rootPanel.add(progress, BorderLayout.NORTH);
 
       JFrame frame = new JFrame("Progress and Cancel Demo");
-      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
       frame.getContentPane().add(rootPanel);
       frame.pack();
       frame.setLocationRelativeTo(null);
@@ -103,20 +90,10 @@ public class ProgressAndCancelDemo {
       if (!SwingUtilities.isEventDispatchThread()) {
          throw new IllegalStateException();
       }
-      Thread executionThread = new Thread() {
-         @Override
-         public void run() {
-            executeKernel();
-         }
-      };
+      Thread executionThread = new Thread(() -> executeKernel());
       executionThread.start();
       updateProgress();
-      timer = new Timer(POLL_SLEEP, new ActionListener() {
-         @Override
-         public void actionPerformed(ActionEvent e) {
-            updateProgress();
-         }
-      });
+      timer = new Timer(POLL_SLEEP, e -> updateProgress());
       timer.setCoalesce(false);
       timer.setRepeats(true);
       timer.start();

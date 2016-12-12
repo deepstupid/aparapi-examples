@@ -40,12 +40,7 @@ public class MedianKernel7x7 extends Kernel {
    // NB could also use suffix naming instead of annotation ... field would be named _window_$private$49
    @PrivateMemorySpace(MAX_WINDOW_SIZE)
    private short[] _window = new short[MAX_WINDOW_SIZE];
-   @NoCL private static ThreadLocal<short[]> _threadLocalWindow = new ThreadLocal<short[]>() {
-      @Override
-      protected short[] initialValue() {
-         return new short[MAX_WINDOW_SIZE];
-      }
-   };
+   @NoCL private static final ThreadLocal<short[]> _threadLocalWindow = ThreadLocal.withInitial(() -> new short[MAX_WINDOW_SIZE]);
    protected int _windowWidth;
    protected int _windowHeight;
 
@@ -113,7 +108,7 @@ public class MedianKernel7x7 extends Kernel {
       }
    }
 
-   protected final int valueForChannel(int channel, int argb) {
+   protected static int valueForChannel(int channel, int argb) {
       int sourcePixel = 0;
       if (channel == CHANNEL_GRAY) {
          sourcePixel = argb;

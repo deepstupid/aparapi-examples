@@ -13,13 +13,13 @@ package com.aparapi.examples.mdarray;
 import com.aparapi.Kernel;
 
 class SMatMul1D extends Kernel{
-   short[] A;
+   final short[] A;
 
-   short[] B;
+   final short[] B;
 
-   short[] C;
+   final short[] C;
 
-   int N;
+   final int N;
 
    public SMatMul1D(short[] A, short[] B, short[] C, int N) {
       this.A = A;

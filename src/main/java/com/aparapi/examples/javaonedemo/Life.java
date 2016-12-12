@@ -48,31 +48,16 @@ under those regulations, please refer to the U.S. Bureau of Industry and Securit
 
 package com.aparapi.examples.javaonedemo;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import com.aparapi.Kernel;
+import com.aparapi.ProfileInfo;
+import com.aparapi.Range;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.WindowConstants;
-
-import com.aparapi.Kernel;
-import com.aparapi.ProfileInfo;
-import com.aparapi.Range;
 
 /**
  * An example Aparapi application which demonstrates Conways 'Game Of Life'.
@@ -85,6 +70,8 @@ import com.aparapi.Range;
  * @author Gary Frost
  */
 public class Life{
+
+   public static final int UPDATE_PERIOD_MS = 10;
 
    /**
     * LifeKernel represents the data parallel algorithm describing by Conway's game of life.
@@ -227,8 +214,8 @@ public class Life{
                final List<ProfileInfo> profileInfo = lifeKernel.getProfileInfo();
                if (profileInfo != null) {
                   for (final ProfileInfo p : profileInfo) {
-                     System.out.print(" " + p.getType() + " " + p.getLabel() + " " + (p.getStart() / 1000) + " .. "
-                           + (p.getEnd() / 1000) + " " + ((p.getEnd() - p.getStart()) / 1000) + "us");
+                     System.out.print(" " + p.getType() + ' ' + p.getLabel() + ' ' + (p.getStart() / 1000) + " .. "
+                           + (p.getEnd() / 1000) + ' ' + ((p.getEnd() - p.getStart()) / 1000) + "us");
                   }
                   System.out.println();
                }
@@ -255,11 +242,9 @@ public class Life{
 
       final JButton startButton = new JButton("Start");
 
-      startButton.addActionListener(new ActionListener(){
-         @Override public void actionPerformed(ActionEvent e) {
-            running = true;
-            startButton.setEnabled(false);
-         }
+      startButton.addActionListener(e -> {
+         running = true;
+         startButton.setEnabled(false);
       });
       controlPanel.add(startButton);
 
@@ -270,16 +255,13 @@ public class Life{
 
       final JComboBox modeButton = new JComboBox(choices);
 
-      modeButton.addItemListener(new ItemListener(){
-         @Override public void itemStateChanged(ItemEvent e) {
-            final String item = (String) modeButton.getSelectedItem();
-            if (item.equals(choices[0])) {
-               lifeKernel.setExecutionMode(Kernel.EXECUTION_MODE.JTP);
-            } else if (item.equals(choices[1])) {
-               lifeKernel.setExecutionMode(Kernel.EXECUTION_MODE.GPU);
-            }
+      modeButton.addItemListener(e -> {
+         final String item = (String) modeButton.getSelectedItem();
+         if (item.equals(choices[0])) {
+            lifeKernel.setExecutionMode(Kernel.EXECUTION_MODE.JTP);
+         } else if (item.equals(choices[1])) {
+            lifeKernel.setExecutionMode(Kernel.EXECUTION_MODE.GPU);
          }
-
       });
       controlPanel.add(modeButton);
 
@@ -294,7 +276,7 @@ public class Life{
 
       while (!running) {
          try {
-            Thread.sleep(10);
+            Thread.sleep(UPDATE_PERIOD_MS);
             viewer.repaint();
          } catch (final InterruptedException e1) {
             // TODO Auto-generated catch block

@@ -48,28 +48,16 @@ under those regulations, please refer to the U.S. Bureau of Industry and Securit
 
 package com.aparapi.examples.convolution;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.*;
+import java.awt.*;
 import java.util.Arrays;
 
-import javax.swing.BoxLayout;
-import javax.swing.JComboBox;
-import javax.swing.JPanel;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerModel;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 public class ConvMatrix3x3Editor{
-   Component component;
+   final Component component;
 
-   float[] default3x3;
+   final float[] default3x3;
 
-   float[] none3x3 = new float[] {
+   final float[] none3x3 = new float[] {
          0,
          0,
          0,
@@ -81,28 +69,28 @@ public class ConvMatrix3x3Editor{
          0
    };
 
-   float[] blur3x3 = new float[] {
-         .1f,
-         .1f,
-         .1f,
-         .1f,
-         .1f,
-         .1f,
-         .1f,
-         .1f,
-         .1f
+   final float[] blur3x3 = new float[] {
+           0.1f,
+           0.1f,
+           0.1f,
+           0.1f,
+           0.1f,
+           0.1f,
+           0.1f,
+           0.1f,
+           0.1f
    };
 
-   JSpinner[] spinners = new JSpinner[9];
+   final JSpinner[] spinners = new JSpinner[9];
 
    protected void updated(float[] _convMatrix3x3) {
 
-   };
+   }
 
-   void set(float[] _to, float[] _from) {
+    void set(float[] _to, float[] _from) {
       for (int i = 0; i < 9; i++) {
          _to[i] = _from[i];
-         spinners[i].setValue((Double) (double) _to[i]);
+         spinners[i].setValue((double) _to[i]);
 
       }
       updated(_to);
@@ -120,16 +108,14 @@ public class ConvMatrix3x3Editor{
       grid3x3Panel.setLayout(new GridLayout(3, 3));
       for (int i = 0; i < 9; i++) {
          final int index = i;
-         SpinnerModel model = new SpinnerNumberModel(_convMatrix3x3[index], -50f, 50f, 1f);
+         SpinnerModel model = new SpinnerNumberModel(_convMatrix3x3[index], -50.0f, 50.0f, 1.0f);
          JSpinner spinner = new JSpinner(model);
          spinners[i] = spinner;
-         spinner.addChangeListener(new ChangeListener(){
-            public void stateChanged(ChangeEvent ce) {
-               JSpinner source = (JSpinner) ce.getSource();
-               double value = ((Double) source.getValue());
-               _convMatrix3x3[index] = (float) value;
-               updated(_convMatrix3x3);
-            }
+         spinner.addChangeListener(ce -> {
+            JSpinner source = (JSpinner) ce.getSource();
+            double value = ((Double) source.getValue());
+            _convMatrix3x3[index] = (float) value;
+            updated(_convMatrix3x3);
          });
          grid3x3Panel.add(spinner);
       }
@@ -139,20 +125,16 @@ public class ConvMatrix3x3Editor{
             "BLUR"
       };
       JComboBox combo = new JComboBox(options);
-      combo.addActionListener(new ActionListener(){
-
-         @Override public void actionPerformed(ActionEvent e) {
-            JComboBox cb = (JComboBox) e.getSource();
-            String value = (String) cb.getSelectedItem();
-            if (value.equals("DEFAULT")) {
-               set(_convMatrix3x3, default3x3);
-            } else if (value.equals("NONE")) {
-               set(_convMatrix3x3, none3x3);
-            } else if (value.equals("BLUR")) {
-               set(_convMatrix3x3, blur3x3);
-            }
+      combo.addActionListener(e -> {
+         JComboBox cb = (JComboBox) e.getSource();
+         String value = (String) cb.getSelectedItem();
+         if (value.equals("DEFAULT")) {
+            set(_convMatrix3x3, default3x3);
+         } else if (value.equals("NONE")) {
+            set(_convMatrix3x3, none3x3);
+         } else if (value.equals("BLUR")) {
+            set(_convMatrix3x3, blur3x3);
          }
-
       });
       controlPanel.add(combo);
 

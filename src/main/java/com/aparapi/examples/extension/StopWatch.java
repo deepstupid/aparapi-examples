@@ -19,7 +19,7 @@ public class StopWatch{
 
    public void print(String _str) {
       long end = (System.nanoTime() - start) / 1000000;
-      System.out.println(_str + " " + end);
+      System.out.println(_str + ' ' + end);
    }
 
 }

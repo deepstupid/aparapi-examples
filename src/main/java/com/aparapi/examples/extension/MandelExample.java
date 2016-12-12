@@ -51,14 +51,11 @@ package com.aparapi.examples.extension;
 import com.aparapi.*;
 import com.aparapi.device.*;
 import com.aparapi.internal.kernel.*;
-import com.aparapi.opencl.*;
-import com.aparapi.opencl.OpenCL.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
-import java.util.concurrent.*;
 
 public class MandelExample{
 
@@ -126,19 +123,16 @@ public class MandelExample{
 
       final JComboBox startButton = new JComboBox(choices);
 
-      startButton.addItemListener(new ItemListener(){
-         @Override public void itemStateChanged(ItemEvent e) {
-            final String item = (String) startButton.getSelectedItem();
+      startButton.addItemListener(e -> {
+         final String item = (String) startButton.getSelectedItem();
 
-            if (item.equals(choices[2])) {
-               mandelBrot = gpuMandelBrot;
-            } else if (item.equals(choices[0])) {
-               mandelBrot = javaMandelBrot;
-            } else if (item.equals(choices[1])) {
-               mandelBrot = javaMandelBrotMultiThread;
-            }
+         if (item.equals(choices[2])) {
+            mandelBrot = gpuMandelBrot;
+         } else if (item.equals(choices[0])) {
+            mandelBrot = javaMandelBrot;
+         } else if (item.equals(choices[1])) {
+            mandelBrot = javaMandelBrotMultiThread;
          }
-
       });
       controlPanel.add(startButton);
 
@@ -160,11 +154,11 @@ public class MandelExample{
       final int[] imageRgb = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
       /** Mutable values of scale, offsetx and offsety so that we can modify the zoom level and position of a view. */
-      float scale = .0f;
+      float scale = 0.0f;
 
-      float offsetx = .0f;
+      float offsetx = 0.0f;
 
-      float offsety = .0f;
+      float offsety = 0.0f;
       Device device = KernelManager.instance().bestDevice();
       if (device instanceof OpenCLDevice) {
          final OpenCLDevice openclDevice = (OpenCLDevice) device;
@@ -177,10 +171,10 @@ public class MandelExample{
       javaMandelBrot = new JavaMandelBrot();
       javaMandelBrotMultiThread = new JavaMandelBrotMultiThread();
       mandelBrot = javaMandelBrot;
-      final float defaultScale = 3f;
+      final float defaultScale = 3.0f;
       scale = defaultScale;
-      offsetx = -1f;
-      offsety = 0f;
+      offsetx = -1.0f;
+      offsety = 0.0f;
       final Range range = device.createRange2D(width, height);
       mandelBrot.createMandleBrot(range, scale, offsetx, offsety, imageRgb);
       viewer.repaint();
@@ -205,8 +199,8 @@ public class MandelExample{
             }
          }
 
-         float x = -1f;
-         float y = 0f;
+         float x = -1.0f;
+         float y = 0.0f;
          final float tox = ((float) (to.x - (width / 2)) / width) * scale;
          final float toy = ((float) (to.y - (height / 2)) / height) * scale;
 
@@ -234,7 +228,7 @@ public class MandelExample{
                final long endMillis = System.currentTimeMillis();
                final long elapsedMillis = endMillis - startMillis;
                if (elapsedMillis > 1000) {
-                  framesPerSecondTextField.setText("" + ((frameCount * 1000) / elapsedMillis));
+                  framesPerSecondTextField.setText(String.valueOf((frameCount * 1000) / elapsedMillis));
                   frameCount = 0;
                   startMillis = endMillis;
                }

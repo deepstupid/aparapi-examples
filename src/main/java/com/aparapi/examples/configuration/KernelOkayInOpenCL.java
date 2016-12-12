@@ -14,8 +14,8 @@ package com.aparapi.examples.configuration;
  * Created by Barney on 24/08/2015.
  */
 public class KernelOkayInOpenCL extends com.aparapi.Kernel {
-   char[] inChars = "KernelOkayInOpenCL".toCharArray();
-   char[] outChars = new char[inChars.length];
+   final char[] inChars = "KernelOkayInOpenCL".toCharArray();
+   final char[] outChars = new char[inChars.length];
 
    @Override
    public void run() {
@@ -25,7 +25,7 @@ public class KernelOkayInOpenCL extends com.aparapi.Kernel {
    }
 
    @NoCL
-   private void oops() {
+   private static void oops() {
       System.out.println("Oops, running in kernel in Java");
    }
 }

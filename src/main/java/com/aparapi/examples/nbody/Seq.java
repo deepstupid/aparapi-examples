@@ -54,15 +54,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
-import com.jogamp.opengl.GL;
-import com.jogamp.opengl.GL2;
-import com.jogamp.opengl.GLAutoDrawable;
-import com.jogamp.opengl.GLCapabilities;
-import com.jogamp.opengl.GLEventListener;
-import com.jogamp.opengl.GLException;
-import com.jogamp.opengl.GLProfile;
+import com.jogamp.opengl.*;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.fixedfunc.GLLightingFunc;
 import com.jogamp.opengl.glu.GLU;
@@ -73,9 +66,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
-import com.aparapi.Kernel;
-import com.aparapi.ProfileInfo;
-import com.aparapi.Range;
 import com.jogamp.opengl.util.FPSAnimator;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureData;
@@ -97,11 +87,11 @@ import com.jogamp.opengl.util.texture.TextureIO;
 public class Seq{
 
    public static class NBodyKernel {
-      protected final float delT = .005f;
+      protected final float delT = 0.005f;
 
       protected final float espSqr = 1.0f;
 
-      protected final float mass = 5f;
+      protected final float mass = 5.0f;
 
       private final int bodies;
 
@@ -118,7 +108,7 @@ public class Seq{
          bodies = _bodies;
          xyz = new float[bodies * 3];
          vxyz = new float[bodies * 3];
-         final float maxDist = 20f;
+         final float maxDist = 20.0f;
          for (int body = 0; body < (bodies * 3); body += 3) {
 
             final float theta = (float) (Math.random() * Math.PI * 2);
@@ -148,9 +138,9 @@ public class Seq{
          for (int body = 0; body < bodies; body++){
          final int globalId = body * 3;
 
-         float accx = 0.f;
-         float accy = 0.f;
-         float accz = 0.f;
+         float accx = 0.0f;
+         float accy = 0.0f;
+         float accz = 0.0f;
 
          final float myPosx = xyz[globalId + 0];
          final float myPosy = xyz[globalId + 1];
@@ -159,7 +149,7 @@ public class Seq{
             final float dx = xyz[i + 0] - myPosx;
             final float dy = xyz[i + 1] - myPosy;
             final float dz = xyz[i + 2] - myPosz;
-            final float invDist = 1f/((float)Math.sqrt((dx * dx) + (dy * dy) + (dz * dz) + espSqr));
+            final float invDist = 1.0f /((float)Math.sqrt((dx * dx) + (dy * dy) + (dz * dz) + espSqr));
             final float s = mass * invDist * invDist * invDist;
             accx = accx + (s * dx);
             accy = accy + (s * dy);
@@ -168,9 +158,9 @@ public class Seq{
          accx = accx * delT;
          accy = accy * delT;
          accz = accz * delT;
-         xyz[globalId + 0] = myPosx + (vxyz[globalId + 0] * delT) + (accx * .5f * delT);
-         xyz[globalId + 1] = myPosy + (vxyz[globalId + 1] * delT) + (accy * .5f * delT);
-         xyz[globalId + 2] = myPosz + (vxyz[globalId + 2] * delT) + (accz * .5f * delT);
+         xyz[globalId + 0] = myPosx + (vxyz[globalId + 0] * delT) + (accx * 0.5f * delT);
+         xyz[globalId + 1] = myPosy + (vxyz[globalId + 1] * delT) + (accy * 0.5f * delT);
+         xyz[globalId + 2] = myPosz + (vxyz[globalId + 2] * delT) + (accz * 0.5f * delT);
 
          vxyz[globalId + 0] = vxyz[globalId + 0] + accx;
          vxyz[globalId + 1] = vxyz[globalId + 1] + accy;
@@ -185,7 +175,7 @@ public class Seq{
        */
 
       protected void render(GL2 gl) {
-         gl.glBegin(GL2.GL_QUADS);
+         gl.glBegin(GL2ES3.GL_QUADS);
 
          for (int i = 0; i < (bodies * 3); i += 3) {
             gl.glTexCoord2f(0, 1);
@@ -226,17 +216,15 @@ public class Seq{
 
       final JButton startButton = new JButton("Start");
 
-      startButton.addActionListener(new ActionListener(){
-         @Override public void actionPerformed(ActionEvent e) {
-            running = true;
-            startButton.setEnabled(false);
-         }
+      startButton.addActionListener(e -> {
+         running = true;
+         startButton.setEnabled(false);
       });
       controlPanel.add(startButton);
       controlPanel.add(new JLabel("SEQ"));
 
       controlPanel.add(new JLabel("   Particles"));
-      controlPanel.add(new JTextField("" + bodies, 5));
+      controlPanel.add(new JTextField(String.valueOf(bodies), 5));
 
       controlPanel.add(new JLabel("FPS"));
       final JTextField framesPerSecondTextField = new JTextField("0", 5);
@@ -263,17 +251,17 @@ public class Seq{
       canvas.addGLEventListener(new GLEventListener(){
          private double ratio;
 
-         private final float xeye = 0f;
+         private final float xeye = 0.0f;
 
-         private final float yeye = 0f;
+         private final float yeye = 0.0f;
 
-         private final float zeye = 100f;
+         private final float zeye = 100.0f;
 
-         private final float xat = 0f;
+         private final float xat = 0.0f;
 
-         private final float yat = 0f;
+         private final float yat = 0.0f;
 
-         private final float zat = 0f;
+         private final float zat = 0.0f;
 
          public final float zoomFactor = 1.0f;
 
@@ -293,12 +281,12 @@ public class Seq{
             texture.bind(gl);
             gl.glLoadIdentity();
             gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-            gl.glColor3f(1f, 1f, 1f);
+            gl.glColor3f(1.0f, 1.0f, 1.0f);
 
             final GLU glu = new GLU();
-            glu.gluPerspective(45f, ratio, 0f, 1000f);
+            glu.gluPerspective(45.0f, ratio, 0.0f, 1000.0f);
 
-            glu.gluLookAt(xeye, yeye, zeye * zoomFactor, xat, yat, zat, 0f, 1f, 0f);
+            glu.gluLookAt(xeye, yeye, zeye * zoomFactor, xat, yat, zat, 0.0f, 1.0f, 0.0f);
             if (running) {
                kernel.run();
             }
@@ -335,9 +323,7 @@ public class Seq{
                final InputStream textureStream = Seq.class.getResourceAsStream("particle.jpg");
                TextureData data = TextureIO.newTextureData(profile, textureStream, false, "jpg");
                texture = TextureIO.newTexture(data);
-            } catch (final IOException e) {
-               e.printStackTrace();
-            } catch (final GLException e) {
+            } catch (final IOException | GLException e) {
                e.printStackTrace();
             }
 
@@ -350,7 +336,7 @@ public class Seq{
             final GL2 gl = drawable.getGL().getGL2();
             gl.glViewport(0, 0, width, height);
 
-            ratio = (double) width / (double) height;
+            ratio = (double) width / height;
 
          }
 
